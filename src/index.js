@@ -1,7 +1,17 @@
 export default (editor, opts = {}) => {
   const options = { ...{
-    // default options
+    // Extend the filter type input, eg. `{ name: 'Filter type', defaults: 'blur', ... }`
+    inputFilterType: {},
+
+    // Extend the default filter strength input, eg. `{ name: 'Blur', defaults: 50, ... }`
+    inputFilterStrength: {},
+
+    // Customize the filter strength input when it should be updated. The option
+    // is a function, which receive the current object type and returns a new one
+    filterStrengthChange: type => type,
   },  ...opts };
+
+  const { filterStrengthChange } = options;
 
   const sm = editor.StyleManager;
   const stack = sm.getType('stack');
@@ -23,6 +33,7 @@ export default (editor, opts = {}) => {
       { value: 'saturate'},
       { value: 'sepia'},
     ],
+    ...options.inputFilterType,
   };
   const filterStrength = {
     property: 'filter_strength',
@@ -34,6 +45,7 @@ export default (editor, opts = {}) => {
     step: 1,
     max: 100,
     min:0,
+    ...options.inputFilterStrength,
   };
 
   sm.addType('filter', {
@@ -43,7 +55,7 @@ export default (editor, opts = {}) => {
         layerSeparator: ' ',
         properties: [
           filterType,
-          filterStrength,
+          filterStrengthChange(filterStrength),
         ],
       }),
 
@@ -71,7 +83,7 @@ export default (editor, opts = {}) => {
           layers.push({
             properties: [
               { ...filterType, value: functionName },
-              { ...filterStrength,
+              { ...filterStrengthChange(filterStrength),
                 ...this.getStrengthPropsByType(functionName), value, unit },
             ]
           })
@@ -102,12 +114,14 @@ export default (editor, opts = {}) => {
             break;
         }
 
-        return {
+        const result = {
             functionName,
             unit,
             units,
-            max
-        }
+            max,
+        };
+
+        return filterStrengthChange(result);
       },
 
       /**

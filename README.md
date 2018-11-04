@@ -22,9 +22,11 @@ Add `filter` type input to the Style Manager in GrapesJS
 
 ## Options
 
-|Option|Description|Default|
+| Option | Description | Default |
 |-|-|-
-|`option1`|Description option|`default value`|
+| `inputFilterType` | Extend the filter type input, eg. `{ name: 'Filter type', defaults: 'blur', ... }` | `{}` |
+| `inputFilterStrength` | Extend the default filter strength input, eg. `{ name: 'Blur', defaults: 50, ... }` | `{}` |
+| `filterStrengthChange` | Customize the filter strength input when it should be updated. The option is a function, which receive the current object type and returns a new one | `type => type` |
 
 
 

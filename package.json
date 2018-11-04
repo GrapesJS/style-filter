@@ -1,7 +1,7 @@
 {
   "name": "grapesjs-style-filter",
-  "version": "0.3.0",
-  "description": "GrapesJS Plugin Boilerplate",
+  "version": "0.1.0",
+  "description": "GrapesJS Style Filter",
   "main": "dist/grapesjs-style-filter.min.js",
   "scripts": {
     "lint": "eslint src",
@@ -16,7 +16,8 @@
   "keywords": [
     "grapesjs",
     "plugin",
-    "boilerplate",
+    "style",
+    "filter",
     "wysiwyg"
   ],
   "author": "Artur Arseniev",

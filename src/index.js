@@ -1,17 +1,128 @@
-import loadComponents from './components';
-import loadBlocks from './blocks';
-
 export default (editor, opts = {}) => {
   const options = { ...{
     // default options
   },  ...opts };
 
-  // Add components
-  loadComponents(editor, options);
+  const sm = editor.StyleManager;
+  const stack = sm.getType('stack');
+  const propModel = stack.model;
+  const filterType = {
+    property: 'filter_type',
+    name: 'Type',
+    type: 'select',
+    defaults: 'sepia',
+    full: 1,
+    list: [
+      { value: 'blur'},
+      { value: 'brightness'},
+      { value: 'contrast'},
+      { value: 'grayscale'},
+      { value: 'hue-rotate'},
+      { value: 'invert'},
+      { value: 'opacity'},
+      { value: 'saturate'},
+      { value: 'sepia'},
+    ],
+  };
+  const filterStrength = {
+    property: 'filter_strength',
+    type: 'slider',
+    name: 'Strength',
+    functionName: 'blur',
+    units: ['px'],
+    defaults: 100,
+    step: 1,
+    max: 100,
+    min:0,
+  };
 
-  // Add blocks
-  loadBlocks(editor, options);
+  sm.addType('filter', {
+    model: propModel.extend({
+      defaults: () => ({
+        ...propModel.prototype.defaults,
+        layerSeparator: ' ',
+        properties: [
+          filterType,
+          filterStrength,
+        ],
+      }),
 
-  // TODO Remove
-  editor.on('load', () => editor.addComponents(`<div style="margin:100px; padding:25px;">Content loaded from the plugin</div>`, { at: 0 }))
+      init() {
+        this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.listenTo(this.getLayers(), 'add', this.onNewLayerAdd);
+      },
+
+      /**
+       * On new added layer we should listen to filter_type change
+       * @param  {Layer} layer
+       */
+      onNewLayerAdd(layer) {
+        const typeProp = layer.getPropertyAt(0);
+        layer.listenTo(typeProp, 'change:value', this.handleTypeChange)
+      },
+
+      getLayersFromTarget(target) {
+        const layers = [];
+        const layerValues = target.getStyle()[this.get('property')];
+
+        layerValues && layerValues.split(' ').forEach(layerValue => {
+          const parserOpts = { complete: 1, numeric: 1 };
+          const { value, unit, functionName } = this.parseValue(layerValue, parserOpts);
+          layers.push({
+            properties: [
+              { ...filterType, value: functionName },
+              { ...filterStrength,
+                ...this.getStrengthPropsByType(functionName), value, unit },
+            ]
+          })
+        });
+
+        return layers;
+      },
+
+      handleTypeChange(propType, functionName) {
+        const strProps = this.getStrengthPropsByType(functionName);
+        propType.collection.at(1).set(strProps);
+      },
+
+      getStrengthPropsByType(functionName) {
+        let unit = '%';
+        let units = ['%'];
+        let max = 100;
+
+        switch (functionName) {
+          case 'blur':
+            unit = 'px';
+            units = ['px'];
+            break;
+          case 'hue-rotate':
+            unit = 'deg';
+            units = ['deg'];
+            max = 360;
+            break;
+        }
+
+        return {
+            functionName,
+            unit,
+            units,
+            max
+        }
+      },
+
+      /**
+       * The value that will be set on target.
+       * For the filter type we only need the
+       * filter_strength result
+       * @return {string}
+       */
+      getFullValue() {
+        return this.getLayers()
+          .map(layer => layer.getPropertyAt(1))
+          .map(prop => prop ? prop.getFullValue() : '')
+          .join(' ');
+      },
+    }),
+    view: stack.view,
+  })
 };

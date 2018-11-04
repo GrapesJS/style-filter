@@ -4,6 +4,8 @@ Add `filter` type input to the Style Manager in GrapesJS
 
 [Demo](https://grapesjs.com/demo.html)
 
+> Requires GrapesJS v0.14.40 or higher
+
 
 
 
@@ -52,14 +54,35 @@ Directly in the browser
 <div id="gjs"></div>
 
 <script type="text/javascript">
+  var filterInput = {
+    name: 'Filter',
+    property: 'filter',
+    type: 'filter', // <- the new type
+    full: 1,
+  };
+
   var editor = grapesjs.init({
       container : '#gjs',
       // ...
       plugins: ['grapesjs-style-filter'],
       pluginsOpts: {
         'grapesjs-style-filter': { /* options */ }
-      }
+      },
+      // Use the type on init
+      styleManager: {
+        // ...
+        sectors: [
+          // ...
+          {
+            name: 'Extra',
+            buildProps: ['filter', 'opacity', ...],
+            properties: [ filterInput ],
+          }
+      },
   });
+
+  // or add it to the StyleManager via API
+  editor.StyleManager.addProperty('Extra', filterInput);
 </script>
 ```
 
@@ -80,6 +103,7 @@ const editor = grapesjs.init({
     editor => styleFilter(editor, { /* options */ }),
   ],
 });
+// Same StyleManager usage
 ```
 
 

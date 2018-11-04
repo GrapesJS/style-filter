@@ -36,7 +36,13 @@
         plugins: ['grapesjs-style-filter'],
         pluginsOpts: {
           'grapesjs-style-filter': { some: 'value' }
-        }
+        },
+      });
+      editor.StyleManager.addProperty('Extra', {
+        name: 'Filter',
+        property: 'filter',
+        type: 'filter',
+        full: 1,
       });
       window.editor = editor;
     </script>

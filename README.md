@@ -4,6 +4,9 @@ Add `filter` type input to the Style Manager in GrapesJS
 
 [Demo](https://grapesjs.com/demo.html)
 
+<p align="center"><img src="https://user-images.githubusercontent.com/11614725/47965316-c0fd6f80-e045-11e8-8ce6-8b0251bf36a4.png" alt="GrapesJS" align="center"/></p>
+
+
 > Requires GrapesJS v0.14.40 or higher
 
 

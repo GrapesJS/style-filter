@@ -73,9 +73,9 @@ export default (editor, opts = {}) => {
         layer.listenTo(typeProp, 'change:value', this.handleTypeChange)
       },
 
-      getLayersFromTarget(target) {
+      getLayersFromTarget(target, { resultValue } = {}) {
         const layers = [];
-        const layerValues = target.getStyle()[this.get('property')];
+        const layerValues = resultValue || target.getStyle()[this.get('property')];
 
         layerValues && layerValues.split(' ').forEach(layerValue => {
           const parserOpts = { complete: 1, numeric: 1 };

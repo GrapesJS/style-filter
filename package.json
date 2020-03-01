@@ -1,6 +1,6 @@
 {
   "name": "grapesjs-style-filter",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "GrapesJS Style Filter",
   "main": "dist/grapesjs-style-filter.min.js",
   "scripts": {

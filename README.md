@@ -7,7 +7,7 @@ This plugins adds a new `filter`[built-in style property](https://grapesjs.com/d
 <p align="center"><img src="https://user-images.githubusercontent.com/11614725/47965316-c0fd6f80-e045-11e8-8ce6-8b0251bf36a4.png" alt="GrapesJS" align="center"/></p>
 
 
-> Requires GrapesJS v0.14.40 or higher
+> Requires GrapesJS v0.18.3 or higher
 
 
 
@@ -16,21 +16,8 @@ This plugins adds a new `filter`[built-in style property](https://grapesjs.com/d
 ## Summary
 
 * Plugin name: `grapesjs-style-filter`
-* StyleManager types
+* New Style Manager built-in property
   * `filter`
-
-
-
-
-
-## Options
-
-| Option | Description | Default |
-|-|-|-
-| `inputFilterType` | Extend the filter type input, eg. `{ name: 'Filter type', defaults: 'blur', ... }` | `{}` |
-| `inputFilterStrength` | Extend the default filter strength input, eg. `{ name: 'Blur', defaults: 50, ... }` | `{}` |
-| `filterStrengthChange` | Customize the filter strength input when it should be updated. The option is a function, which receive the current object type and returns a new one | `type => type` |
-
 
 
 
@@ -59,35 +46,30 @@ Directly in the browser
 <div id="gjs"></div>
 
 <script type="text/javascript">
-  var filterInput = {
-    name: 'Filter',
-    property: 'filter',
-    type: 'filter', // <- the new type
-    full: 1,
-  };
-
-  var editor = grapesjs.init({
+  const editor = grapesjs.init({
       container : '#gjs',
       // ...
       plugins: ['grapesjs-style-filter'],
-      pluginsOpts: {
-        'grapesjs-style-filter': { /* options */ }
-      },
-      // Use the type on init
+
+      // Use the property on init
       styleManager: {
-        // ...
         sectors: [
           // ...
           {
+            id: 'extra',
             name: 'Extra',
-            buildProps: ['filter', 'opacity', ...],
-            properties: [ filterInput ],
+            properties: [
+              { extend: 'filter' },
+              { extend: 'filter', property: 'backdrop-filter' },
+            ],
           }
+        ]
       },
   });
 
   // or add it to the StyleManager via API
-  editor.StyleManager.addProperty('Extra', filterInput);
+  editor.StyleManager.addProperty('extra', { extend: 'filter' });
+  editor.StyleManager.addProperty('extra', { extend: 'filter', property: 'backdrop-filter' });
 </script>
 ```
 
@@ -98,17 +80,10 @@ import styleFilter from 'grapesjs-style-filter';
 
 const editor = grapesjs.init({
   container : '#gjs',
-  // ...
-  plugins: [styleFilter],
-  pluginsOpts: {
-    [styleFilter]: { /* options */ }
-  }
-  // or
-  plugins: [
-    editor => styleFilter(editor, { /* options */ }),
-  ],
+  plugins: [styleFilter, /*...*/],
+  // Same StyleManager configuration
 });
-// Same StyleManager usage
+// Same StyleManager API usage
 ```
 
 

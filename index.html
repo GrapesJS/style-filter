@@ -34,16 +34,10 @@
         fromElement: true,
 
         plugins: ['grapesjs-style-filter'],
-        pluginsOpts: {
-          'grapesjs-style-filter': { some: 'value' }
-        },
       });
-      editor.StyleManager.addProperty('Extra', {
-        name: 'Filter',
-        property: 'filter',
-        type: 'filter',
-        full: 1,
-      });
+
+      editor.StyleManager.addProperty('extra', 'filter');
+      editor.StyleManager.addProperty('extra', { extend: 'filter', property: 'backdrop-filter' });
       window.editor = editor;
     </script>
   </body>

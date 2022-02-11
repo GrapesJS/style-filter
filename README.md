@@ -1,6 +1,6 @@
 # GrapesJS Style Filter
 
-Add `filter` type input to the Style Manager in GrapesJS
+This plugins adds a new `filter`[built-in style property](https://grapesjs.com/docs/modules/Style-manager.html#built-in-properties) which can be used for CSS properties like `filter` and `backdrop-filter`.
 
 [Demo](https://jsfiddle.net/rbhqsk7f)
 

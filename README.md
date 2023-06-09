@@ -29,7 +29,7 @@ This plugins adds a new `filter` [built-in style property](https://grapesjs.com/
 * NPM
   * `npm i grapesjs-style-filter`
 * GIT
-  * `git clone https://github.com/artf/grapesjs-style-filter.git`
+  * `git clone https://github.com/GrapesJS/style-filter.git`
 
 
 
@@ -95,7 +95,7 @@ const editor = grapesjs.init({
 Clone the repository
 
 ```sh
-$ git clone https://github.com/artf/grapesjs-style-filter.git
+$ git clone https://github.com/GrapesJS/style-filter.git
 $ cd grapesjs-style-filter
 ```
 

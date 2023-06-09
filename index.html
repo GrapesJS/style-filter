@@ -24,7 +24,7 @@
 
 
     <script type="text/javascript">
-      setTimeout(() => {
+      window.onload = () => {
         var editor = grapesjs.init({
           height: '100%',
           showOffsets: 1,
@@ -39,7 +39,7 @@
         editor.StyleManager.addProperty('extra', 'filter');
         editor.StyleManager.addProperty('extra', { extend: 'filter', property: 'backdrop-filter' });
         window.editor = editor;
-      })
+      };
     </script>
   </body>
 </html>

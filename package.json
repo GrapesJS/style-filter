@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "GrapesJS Style Filter",
   "main": "dist/index.js",
+  "files": [
+    "dist/"
+  ],
   "scripts": {
     "patch": "npm version patch -m 'Bump v%s'",
     "start": "grapesjs-cli serve",
@@ -22,6 +25,7 @@
   "author": "Artur Arseniev",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "grapesjs-cli": "^3.0.0"
+    "grapesjs": "^0.21.2",
+    "grapesjs-cli": "^4.1.1"
   }
 }

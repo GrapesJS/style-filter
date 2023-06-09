@@ -1,17 +1,22 @@
-export default (editor) => {
+import type { Plugin } from 'grapesjs';
+
+export interface PluginOptions {};
+
+const plugin: Plugin<PluginOptions> = (editor) => {
 
   editor.Styles.addBuiltIn('filter', {
     type: 'stack',
+    // @ts-ignore
     layerSeparator: ' ',
-    fromStyle(style, { property, name } ) {
+    fromStyle(style: any, { property, name }: any) {
       const filter = style[name] || '';
       const sep = property.getLayerSeparator();
-      return filter ? filter.split(sep).map(input => {
+      return filter ? filter.split(sep).map((input: string) => {
         const { name, value } = property.__parseFn(input);
         return { name, value };
       }) : [];
     },
-    toStyle(values, { name }) {
+    toStyle(values: any, { name }: any) {
       return { [name]: `${values.name}(${values.value})` };
     },
     properties: [
@@ -31,7 +36,7 @@ export default (editor) => {
           { id: 'saturate', propValue: { min: 0, units: ['%'] } },
           { id: 'sepia', propValue: { min: 0, max: 100, units: ['%'] } },
         ],
-        onChange({ property, to }) {
+        onChange({ property, to }: any) {
           if (to.value) {
             const option = property.getOption();
             const props = { ...(option.propValue || {}) };
@@ -53,3 +58,5 @@ export default (editor) => {
   });
 
 };
+
+export default plugin;
